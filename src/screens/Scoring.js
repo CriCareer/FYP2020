@@ -1,144 +1,27 @@
-import React, { useState, createRef } from 'react';
+import React, { useState, createRef, useEffect } from 'react';
 import { View, Text, ScrollView, Alert, Image } from 'react-native';
 import {Container} from 'native-base'
 import AppHeader from './Header';
 import {logout} from '../../redux/js/actions/AuthActions/AuthActions';
-import { color } from 'react-native-reanimated';
 import { useDispatch } from 'react-redux';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import Card from '../../components/Card';
 import { DataTable } from 'react-native-paper';
-import ModalDropdown from 'react-native-modal-dropdown';
+import {data} from '../utilities/data'; 
 
 function Scoring(props) {
 
-    let {match} = props.route.params;
+    useEffect(() => {
+        const unsubscribe = props.navigation.addListener('focus', () => { 
+        console.log('Nausherwan')
+      });
+    
+        return unsubscribe;
+      }, [props.navigation]);
 
-    // let match = {
-    //     'team1' : 'Islamabad United',
-    //     'team2' : 'Karachi Kings',
-    //     'teamA' : 'IU',
-    //     'team2_s' : 'KK',
-    //     'toss' : '',
-    //     'batting_1': '',
-    //     'venue' : 'Comsats Cricket ground Islamabad',
-    //     'team1_players' : [
-    //         {
-    //             "name" : "Nausherwan Tahir",
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name": 'Sheheryar Arshad',
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name" : "Zahoor Alam",
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name": 'Raja Maooz',
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name" : "Ali Raza",
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name": 'Salman Anwar',
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name" : "Burhan Khan",
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name": 'Noman Ajaz',
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name" : "Haseeb Ansari",
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name": 'Naeem Khan',
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name": 'ShahJehan Khan',
-    //             "score" : 0
-    //         }
-    //         ,
-    //     ],
-    //     'team2_players' : [
-    //         {
-    //             "name" : "Hassan Ali",
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name": 'Kamran Shahid',
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name" : "Ali Waqar",
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name": 'Khurum Manzoor',
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name" : "Shaoib Ahmed",
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name": 'Salman Anwar',
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name" : "Burhan Khan",
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name": 'Noman Ajaz',
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name" : "Haseeb Ansari",
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name": 'Naeem Khan',
-    //             "score" : 0
-    //         }
-    //         ,
-    //         {
-    //             "name": 'ShahJehan Khan',
-    //             "score" : 0
-    //         }
-    //         ,
-    //     ],
-    // }
+    const match = data;
 
-    let team1 = match.teamA , team2= match.teamB, toss_win, batting1, batting2;
+    console.log({Params: props})
+    let team1 = match.team1_s , team2= match.team2_s;
     let  [score, setScore] = useState(0),
         [wickets, setWickets] = useState(0),
         [balls, setBalls] = useState(0),
@@ -164,8 +47,57 @@ function Scoring(props) {
         [overBowler, setOverBowler] = useState(0),
         [scoreBowler, setScoreBowler] = useState(0),
         [wicketBowler, setWicketBowler] = useState(0),
-        [ecBowler, setEcBowler] = useState(0)
+        [ecBowler, setEcBowler] = useState(0),
+        [bat1Index, setBat1Index] = useState(0),
+        [bat2Index, setBat2Index] = useState(1),
+        [bowlerIndex, setBowlerIndex] = useState(1),
+        [win1Ratio, setWin1Ratio] = useState(match.team1.win_ratio),
+        [win2Ratio, setWin2Ratio] = useState(match.team2.win_ratio);
 
+    const nextInnings = () =>{
+           
+    }
+
+    const setRatio = () => {
+        if(overs === 0 && score === 0)
+        {
+            let w1 = win1Ratio*100;
+            let w2 = win2Ratio*100;
+            let constant = ((w1+w2)-100)/2;
+            w1 = (w1 - constant).toFixed(2);
+            w2 = (w2 - constant).toFixed(2);
+            setWin1Ratio(w1);
+            setWin2Ratio(w2);
+        }
+        else
+        {
+            if(wickets< 1)
+            {
+                let standard_bat = ((score/overBalls)*1.5);
+                let standard_bal = ((overBalls/score)*1.8);
+                let w1 = (win1Ratio/100)+standard_bat;
+                let w2 = (win2Ratio/100)+standard_bal;
+                let constant = ((w1+w2)-100)/2;
+                w1 = (w1 - constant).toFixed(1);
+                w2 = (w2 - constant).toFixed(1);
+                setWin1Ratio(w1);
+                setWin2Ratio(w2);
+            }
+            else{
+                let standard_bat = ((score/overBalls)*0.9)-((wickets/overs)*1.1);
+                let standard_bal = ((score/overBalls)*1.6)+((wickets/overs)*0.7);
+                let w1 = (win1Ratio/100)+standard_bat;
+                let w2 = (win2Ratio/100)+standard_bal;
+                let constant = ((w1+w2)-100)/2;
+                w1 = (w1 - constant).toFixed(1);
+                w2 = (w2 - constant).toFixed(1);
+                setWin1Ratio(w1);
+                setWin2Ratio(w2);
+            }    
+        }
+       
+        
+    }
 
     const changeStrike = () => {
         console.log({ORIGINALSTRIKE: strike});
@@ -225,11 +157,19 @@ function Scoring(props) {
 
     const handleScore = (value) => 
     {
-        console.log(value)
-        if(overs === 20)
+        if(overs === 5)
         {
-            Alert.alert('Innings Finished')
+            Alert.alert('Innings Finished');
+            let obj = {
+                team: match.team1,
+                score: score,
+                overs: overs,
+                wickets: wickets,
+            }
+            props.navigation.navigate('Scorecard', {data: obj} );
+            nextInnings();
         }
+
         else   
         {
         if(value.includes('wd'))
@@ -246,13 +186,17 @@ function Scoring(props) {
         };
         setScorepad(scorepad => [...scorepad, {scoreObject}])
 
-        let run_rate = (newScore/(balls/6)).toFixed(2);
-            let newrate1 = ((ScoreBat1/ballsBat1)*100).toFixed(2)
-            let newrate2 = ((ScoreBat2/ballsBat2)*100).toFixed(2)
-            setCurrent_rr(run_rate)
-            SetRateBat1(newrate1)
-            SetRateBat2(newrate2)
 
+            let run_rate;
+            if(score === 0 && balls === 0)
+            {
+                run_rate=0.0;
+                setCurrent_rr(run_rate)
+            }
+            else{
+                run_rate = (newScore/(balls/6)).toFixed(2);
+                setCurrent_rr(run_rate)
+            }
         }
         else if(value.includes('lb'))
         {
@@ -260,6 +204,7 @@ function Scoring(props) {
             let newvalue = Number(value.slice(0,0)+1);
             let newScore= score+newvalue;
             setScore(newScore);
+            changeStrike();
             let scoreObject = {
             over: overs,
             ball: overBalls,
@@ -275,16 +220,18 @@ function Scoring(props) {
             SetRateBat1(newrate1)
             SetRateBat2(newrate2)
 
-            let newscbal = scoreBowler + value;
+            let newscbal = scoreBowler + newvalue;
             setScoreBowler(newscbal);
             let new_ec = (newscbal/overBalls).toFixed(2);
             setEcBowler(new_ec)
+            
         }
         else if(value.includes('b'))
         {
             setExtras(extras => [...extras, value])
             let newvalue = Number(value.slice(0,0)+1);
             let newScore= score+newvalue;
+            changeStrike();
             setScore(newScore);
             let scoreObject = {
             over: overs,
@@ -301,10 +248,11 @@ function Scoring(props) {
             SetRateBat1(newrate1)
             SetRateBat2(newrate2)
 
-            let newscbal = scoreBowler + value;
+            let newscbal = scoreBowler + newvalue;
             setScoreBowler(newscbal);
             let new_ec = (newscbal/overBalls).toFixed(2);
             setEcBowler(new_ec)
+            
         }
         else if(value.includes('nb'))
         {
@@ -328,10 +276,11 @@ function Scoring(props) {
             SetRateBat1(newrate1)
             SetRateBat2(newrate2)
 
-            let newscbal = scoreBowler + value;
+            let newscbal = scoreBowler + newvalue;
             setScoreBowler(newscbal);
             let new_ec = (newscbal/overBalls).toFixed(2);
             setEcBowler(new_ec)
+            
         }
         else if(value === 'undo')
         {
@@ -356,7 +305,7 @@ function Scoring(props) {
             let new_ec = (newscbal/overBalls).toFixed(2);
             setEcBowler(new_ec)
         }
-        else if(value === 'wk')
+        else if(value.includes('wk'))
         {
             let newWickets = wickets+1;
             setWickets(newWickets);
@@ -374,6 +323,24 @@ function Scoring(props) {
             console.log("Overs: "+ newOvers +'.'+newOverBalls)
             if(strike === bat1)
             {
+                match.team1_players[bat1Index].score = ScoreBat1;
+                match.team1_players[bat1Index].ball = ballsBat1;
+                match.team1_players[bat1Index].fours = foursBat1;
+                match.team1_players[bat1Index].sixes = sixesBat1;
+                if(ScoreBat1 > 29 && ScoreBat1<50)
+                    match.team1_players[bat1Index].thirties++;
+                else if(ScoreBat1 >49 && ScoreBat1 < 100)
+                match.team1_players[bat1Index].fifties++;
+                else if(ScoreBat1 >100)
+                match.team1_players[bat1Index].centuries++;
+
+                match.team2_players[bowlerIndex].b_balls = balls;
+                match.team2_players[bowlerIndex].b_score = scoreBowler;
+                match.team2_players[bowlerIndex].b_overs = overBowler;
+                match.team2_players[bowlerIndex].b_wickets = wicketBowler;
+                console.log(match.team1_players[bat1Index])
+                setBat1Index(bat1Index+1)
+
                 setBat1(match.team1_players[newWickets+1].name);
                 match.team1_players[newWickets -1 ].score = ScoreBat1;
                 SetScoreBat1(0);
@@ -385,8 +352,20 @@ function Scoring(props) {
             }
             else
             {
+                match.team1_players[bat2Index].score = ScoreBat2;
+                match.team1_players[bat2Index].ball = ballsBat2;
+                match.team1_players[bat2Index].fours = foursBat2;
+                match.team1_players[bat2Index].sixes = sixesBat2;
+                if(ScoreBat2 > 29 && ScoreBat2<50)
+                    match.team1_players[bat2Index].thirties = thirtiesBat2;
+                else if(ScoreBat2 >49 && ScoreBat2 < 100)
+                match.team1_players[bat2Index].fifties = fiftiesBat2;
+                else if(ScoreBat2 >100)
+                match.team1_players[bat2Index].centuries = centuriesBat2;
+                console.log(match.team1_players[bat2Index])
+                setBat2Index(bat2Index+1)
                 setBat2(match.team1_players[newWickets+1].name);
-                match.team1_players[newWickets - 0 ].score = ScoreBat1;
+                match.team1_players[newWickets - 0 ].score = ScoreBat2;
                 SetScoreBat2(0);
                 SetBallsBat2(0);
                 SetFoursBat2(0);
@@ -396,10 +375,10 @@ function Scoring(props) {
             }
             setBalls(newBalls);
             setOverBalls(newOverBalls); 
-            let newscbal = scoreBowler + value;
-            setScoreBowler(newscbal);
-            let new_ec = (newscbal/overBalls).toFixed(2);
-            setEcBowler(new_ec)
+            let new_ec = (scoreBowler/overBalls).toFixed(2);
+            setEcBowler(new_ec);
+            let run_rate = (score/(balls/6)).toFixed(2);
+            setCurrent_rr(run_rate)
         }
         else
         {
@@ -418,16 +397,23 @@ function Scoring(props) {
             };
 
             changeBatStats(value);
-            let run_rate = (newScore/(newBalls/6)).toFixed(2);
-            let newrate1 = ((ScoreBat1/ballsBat1)*100).toFixed(2);
-            let newrate2 = ((ScoreBat2/ballsBat2)*100).toFixed(2);
-            setCurrent_rr(run_rate)
+            let newrate1 = ((ScoreBat1/ballsBat1)*100).toFixed(2)
+            let newrate2 = ((ScoreBat2/ballsBat2)*100).toFixed(2)
             SetRateBat1(newrate1)
             SetRateBat2(newrate2)
+            if(ScoreBat1 === 0 )
+            {
+                newrate1 = 0.0
+                SetRateBat1(newrate1);
+            }
+            if(ScoreBat2 === 0 )
+            {
+                newrate1 = 0.0
+                SetRateBat2(newrate2);
+            }
             let newscbal = scoreBowler + value;
             setScoreBowler(newscbal);
-            let new_ec = (newscbal/overBalls).toFixed(2);
-            setEcBowler(new_ec)
+           
             setScorepad(scorepad => [...scorepad, {scoreObject}])
             if( newOverBalls > 5)
             {
@@ -436,6 +422,7 @@ function Scoring(props) {
                 newOverBalls = 0;
                 changeStrike();
                 setBowler(match.team2_players[2].name)
+                setRatio();
             }
             else{
                 newOvers = overs + 0;
@@ -443,8 +430,36 @@ function Scoring(props) {
             }
             console.log("Overs: "+ newOvers +'.'+newOverBalls)
             setBalls(newBalls);
-    
             setOverBalls(newOverBalls);
+            let run_rate = (newScore/(balls/6)).toFixed(2);
+            setCurrent_rr(run_rate)
+
+            //updating batsman 1 in database
+            match.team1_players[bat1Index].score = ScoreBat1;
+            match.team1_players[bat1Index].ball = ballsBat1;
+            console.log(match.team1_players[0])
+
+            //updating batsman 2 in database
+            match.team1_players[bat2Index].score = ScoreBat2;
+            match.team1_players[bat2Index].ball = ballsBat2;
+            console.log(match.team1_players[0])
+            
+            //updating batsman 2 in database
+            match.team2_players[bowlerIndex].score = ScoreBat2;
+            match.team1_players[bowlerIndex].ball = ballsBat2;
+            console.log(match.team1_players[0])
+
+            if(newscbal === 0 || overBalls == 0)
+            {
+                let new_ec = (newscbal/overBalls).toFixed(2);
+                setEcBowler(new_ec)
+            }
+            else{
+                let new_ec = (newscbal/overBalls).toFixed(2);
+                console.log(new_ec)
+                setEcBowler(new_ec)
+            }
+            setScoreBowler(scoreBowler);
             
         }
     }  
@@ -454,7 +469,7 @@ function Scoring(props) {
     let dispatch = useDispatch();
     return (
         <Container>
-        <AppHeader
+        {/* <AppHeader
           isMenu={true}
           OpenMenu={() => {
             props.navigation.toggleDrawer();
@@ -464,10 +479,8 @@ function Scoring(props) {
           Logout={() => { dispatch(logout())
             props.navigation.navigate('landing');
           }}
-        />
-        {console.log({StrikeChanged: strike})}
-        {console.log({Extras: extras})}
-        {console.log({Scoreboard: scorepad})}
+        /> */}
+        
         <View style={{ flex:0.08, justifyContent:'center', alignItems: 'center'}}>
           <Text style={{fontWeight: '800', fontSize: 25, color: '#01438D', marginTop: 20}}>SCORING CENTER</Text>
         </View>
@@ -478,7 +491,7 @@ function Scoring(props) {
                 <Text style={{fontWeight: '800', fontSize: 15, color: 'white', marginTop:10 }}>Overs: {overs}.{overBalls}/20</Text>
             </View>
             <View style={{flex: 0.7, backgroundColor: '#01438D', padding: 10, justifyContent:'center'}}>
-                <Text style={{fontWeight: '200', fontSize: 15, color: 'white', textAlign:'center'}}>1st Innings{'       '}Toss: {team1}</Text>
+                <Text style={{fontWeight: '200', fontSize: 15, color: 'white', textAlign:'center'}}>1st Innings{'       '}Toss: {match.toss}</Text>
                 <Text style={{fontWeight: '200', fontSize: 15, color: 'white',textAlign:'center'}}>Current R.R : {current_rr}</Text>
                 <Text style={{fontWeight: '200', fontSize: 15, color: 'white',textAlign:'center'}}>Extras : {extras.length}</Text>
             </View>
@@ -543,8 +556,12 @@ function Scoring(props) {
               keyExtractor={item => item.id}
             /> */}
             <ScrollView horizontal={true}>
-            {/* <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', margin: 20, textAlign:'center'}}>{scorepad[0].run}</Text>
-            <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', margin: 20, textAlign:'center'}}>{scorepad[1].run}</Text>
+         <Image source={{uri: match.team1.avatar}} style={{height: 60, width: 70}}/>       
+        <Text style={{fontWeight: '800', fontSize: 20, color: '#507E14', margin: 10, textAlign:'center'}}>{'  '}{win1Ratio}{'%    '}</Text>
+        <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', margin: 10, textAlign:'center'}}> : </Text>
+        <Text style={{fontWeight: '800', fontSize: 20, color: '#507E14', margin: 10, textAlign:'center'}}>{'  '}{win2Ratio}{'% '}</Text>
+        <Image source={{uri: match.team2.avatar}} style={{height: 50, width: 70}}/> 
+            {/* <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', margin: 20, textAlign:'center'}}>{scorepad[1].run}</Text>
             <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', margin: 20, textAlign:'center'}}>{scorepad[2].run}</Text>
             <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', margin: 20, textAlign:'center'}}>{scorepad[3].run}</Text>
             <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', margin: 20, textAlign:'center'}}>{scorepad[4].run}</Text>

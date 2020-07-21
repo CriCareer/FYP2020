@@ -88,7 +88,7 @@ export const DepositAmount = (Obj) => async dispatch => {
   try {
         let Endpoint = `/api/cricpocket_transactions/deposit`;
         let response = await DataAccess.PostSecured(Endpoint, Obj);
-        console.log(response);
+      console.log({response : response});
         return dispatch(success(response));
 
   } catch (error) {

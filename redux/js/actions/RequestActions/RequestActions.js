@@ -29,7 +29,7 @@ export const LoadRequests = () => async dispatch => {
   try {
     let Endpoint = `/api/request/incoming`;
       let response = await DataAccess.Get(Endpoint);
-      console.log(response);
+      console.log({ApiResponse: response});
       dispatch(setRequestInfo(response))
       return dispatch(success(response));
   } catch (error) {

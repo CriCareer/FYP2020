@@ -11,9 +11,16 @@ function Card(props) {
     const handleStart = () => {
         if(props.children.start_status)
         {
-            props.flow.navigate('toss', {match: props.children})
+            props.flow.navigate('Scoring')
         }
-        props.flow.navigate('toss', {match: props.children});
+        if(props.children.match_fixed)
+        {
+            props.flow.navigate('toss', {match: props.children});
+        }
+        else{
+            Alert.alert('No team has joined this match')
+        }
+        
     }
 
     let dispatch = useDispatch();
@@ -44,9 +51,9 @@ function Card(props) {
                 <Text style={{color: "#507E14", fontSize: 14 , fontWeight:'500', alignItems: 'center', marginTop: 20}}>ID:  : {props.children._id}</Text>
                 <Text style={{color: "#01438D", fontSize: 20, fontWeight:'bold', alignItems: 'center', marginTop: 20}}>Title : {`${props.children.teamA.name} VS ${props.children.teamB ? props.children.teamB.name : '?'}`}</Text>
                 <Text style={{color: "#507E14", fontSize: 20, fontWeight:'500', alignItems: 'center', marginTop: 10}}>Format : {props.children.format}</Text>
-                <Text style={{color: "#507E14", fontSize: 20, fontWeight:'500', alignItems: 'center', marginTop: 10}}>Venue : {props.children.venue.name}</Text>
+                <Text style={{color: "#507E14", fontSize: 20, fontWeight:'500', alignItems: 'center', marginTop: 10}}>Venue : {props.children.venue && props.children.venue.name}</Text>
                 <View style={{marginBottom: 20}}>
-                    {console.log({Button : props.button})}
+                    {console.log({Button : props.children})}
                 {(props.button && props.button) && (props.children.start_status) ?
                 <TouchableOpacity style={{padding: 10}} onPress = {() => handleStart()}>
                     <Text style={{color: 'white', fontSize: 16, backgroundColor:'#01438D', padding: 10, width: 60}}>{props.button2 && props.button2}</Text>   
@@ -93,7 +100,7 @@ function Card(props) {
             </View>
             }
           </View>}
-            {props.button && props.button === 'Invite' && user.role === 'Team Manager' ?
+            {props.button && props.button === 'Invite' && user && user.role === 'Team Manager' ?
                 <View>
                     { (props.button && props.button) &&
                     <TouchableOpacity style={{padding: 20}} onPress = {() => handleInvite(props.children._id)}>
@@ -103,7 +110,7 @@ function Card(props) {
                     </TouchableOpacity>
                     }
                 </View>
-            : props.button && props.button === 'Join' && (user.role === 'Team Manager' || user.role === 'Player')
+            : props.button && props.button === 'Join' && (user && user.role === 'Team Manager' || user && user.role === 'Player')
             ?<View>
                 {props.button && props.button &&
                 <TouchableOpacity style={{padding: 20}} onPress = {() => Alert.alert("Request sent to " + props.children.name)}>

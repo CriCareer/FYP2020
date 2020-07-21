@@ -93,16 +93,17 @@ function MatchForm(props) {
         let response = await dispatch(CreateMatch(MatchObject));
         console.log(response)
         // console.log({CreatematchResponse: response.data.data});
-        if (response.type === 'TEAM_SUCCESS') {
+        if (response.type === 'MATCH_SUCCESS') {
           if(response.data.msg)
             {
-              Alert.alert('ALERT', response.data.msg)
+              Alert.alert('ALERT', response.data.msg);
             }
             else{
               Alert.alert('Match Created');
+              props.navigation.navigate('MyTeam');
             }
         } else {
-          Alert.alert('Match Created');
+          Alert.alert('Match Failed');
         }
       }
     } else {

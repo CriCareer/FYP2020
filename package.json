@@ -34,6 +34,7 @@
     "react-native-reanimated": "^1.7.0",
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.0.0-beta.13",
+    "react-native-select-multiple": "^2.1.0",
     "react-native-tab-view": "^2.14.4",
     "react-native-table-component-pro": "^1.0.1",
     "react-native-ui-xg": "0.0.6",

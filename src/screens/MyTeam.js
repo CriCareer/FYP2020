@@ -11,6 +11,7 @@ import { LoadPlayer } from '../../redux/js/actions/PlayerActions/PlayerActions';
 import { LoadTeam, GetTeamPlayers } from '../../redux/js/actions/TeamActions/TeamActions';
 import { styles } from '../../styles/signup';
 import Card from '../../components/Card';
+import { LoadMyMatches } from '../../redux/js/actions/MatchActions/MatchActions';
 
 function MyTeam(props) {
 
@@ -41,57 +42,38 @@ function MyTeam(props) {
       'no_result' : 0,
       }
   }
-
   
   
   let dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let response = await dispatch(GetTeamPlayers())
-              if(response.type === 'TEAM_SUCCESS')
-              {
-                console.log({TeamPlayer: response.data})
-                await setTeamPlayers(response.data);
-              }
+    const unsubscribe = props.navigation.addListener('focus', () => { 
+    console.log('Nausherwan')
+    fetchData();
+  });
 
-          // let response1 = await dispatch(LoadPlayer());
-          // if (response1.type === 'PLAYER_SUCCESS') {
-          //   console.log('Player Loaded')
-          //   await setPlayer(response.data.data)
-          //   if(!teamState || !teamState.name)
-          //   {
-          //     let response2 = await dispatch(LoadTeam());
-          //     if(response2.type === 'TEAM_SUCCESS')
-          //     {
-          //       let response3 = await dispatch(GetTeamPlayers())
-          //       if(response3.type === 'TEAM_SUCCESS')
-          //       {
-          //         await setTeamPlayers(response.data.data);
-          //       }
-          //       // await setPlayer(response.data.data)
-          //     }
-          //   }
-          //   else
-          //   {
-          //     console.log('Team State exists')
-          //   }
-          // }
-          // else{
-          //     console.log('Player loading failed')
-          // }
-      } catch (error) {
-        console.log({catch: error})
-      }
+    return unsubscribe;
+  }, [props.navigation]);
+
+    const fetchData = async () => {
+        dispatch(LoadTeam())
+        .then((response) => {
+          console.log({Team: response.data})
+        })
+        dispatch(LoadMyMatches());
+        dispatch(GetTeamPlayers())
+        .then((response) => {
+          if(response.type === 'TEAM_SUCCESS')
+          {
+            setTeamPlayers(response.data);
+          } 
+        });
   };
     
-    fetchData();
-  }, []);
-  
     
     return (
         <Container style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
+          {console.log({State: teamState.avatar})}
                <AppHeader
                   isMenu={true}
                   OpenMenu={() => {
@@ -138,7 +120,7 @@ function MyTeam(props) {
                     </TouchableOpacity>
                     <TouchableOpacity style={{justifyContent:'center', alignItems: 'center', padding: 20}} onPress={() => props.navigation.navigate('MyMatches')}>
                       <Text style={styles.signupButton}>
-                        All
+                        Matches
                       </Text>
                     </TouchableOpacity>
                   </View>

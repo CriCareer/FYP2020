@@ -40,7 +40,8 @@ function Signup(props) {
           let response = await dispatch(UserSignup(SignupObject))
           response = await dispatch(loadUser());
           if (response.type === 'AUTH_SUCCESS') {
-            Alert.alert('Registration success');    
+            Alert.alert('Registration success'); 
+            props.navigation.navigate('AppLanding');
           }
           else {
             Alert.alert('Registration success');

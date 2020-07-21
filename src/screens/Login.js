@@ -14,7 +14,8 @@ import { LoadPlayer, GetAllPlayers } from '../../redux/js/actions/PlayerActions/
 import { LoadCricpocket } from '../../redux/js/actions/CricpocketActions/CricpocketActions';
 import { LoadTeam, GetAllTeams } from '../../redux/js/actions/TeamActions/TeamActions';
 import { LoadMyVenues, GetAllVenues } from '../../redux/js/actions/VenueActions/VenueActions';
-import { GetAllMatches } from '../../redux/js/actions/MatchActions/MatchActions';
+import { GetAllMatches, LoadMyMatches } from '../../redux/js/actions/MatchActions/MatchActions';
+import { LoadRequests } from '../../redux/js/actions/RequestActions/RequestActions';
 
 
 function Login(props) {
@@ -130,6 +131,25 @@ function Login(props) {
         {
           console.log('All Matches Error')
         }
+        response = await dispatch(LoadRequests());
+        if(response.type === 'REQUEST_SUCCESS')
+        {
+          console.log('All Requests Loaded')
+        }
+        else
+        {
+          console.log('All Requests Error')
+        }
+
+        response = await dispatch(LoadMyMatches());
+            if(response.type === 'MATCH_SUCCESS')
+            {
+              console.log('My Matches Loaded')
+            }
+            else
+            {
+              console.log('My Matches Error')
+            }
         
         props.navigation.navigate('AppLanding');
       }

@@ -9,7 +9,6 @@ function TeamSquad(props) {
 
     useEffect(() => {
     })
-
     const {teamPlayers} = props.route.params;
     console.log({TamSquadPlayer : teamPlayers})
 

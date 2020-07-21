@@ -21,6 +21,7 @@ function ProfileForm(props) {
     let dispatch = useDispatch();
 
     const handleSubmit = async () => {
+      console.log(props.navigation)
             let check = checkInputs([city, cnic, date, name, phone, avatar]);
             let ProfileObject = {
               name: name,
@@ -43,6 +44,7 @@ function ProfileForm(props) {
               if(response.type === 'PROFILE_SUCCESS')
               {
                 Alert.alert('Profile Created');
+                props.navigation.navigate('AuthLoading')
               }
               else{
                 Alert.alert('Profile Failed')

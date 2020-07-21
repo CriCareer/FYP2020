@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { styles } from '../styles/signup';
 import Axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
-import {DepositAmount, WithdrawAmount, TransferAmount, LoadReceiver, loading} from '../redux/js/actions/CricpocketActions/CricpocketActions';
+import {DepositAmount, WithdrawAmount, TransferAmount, LoadReceiver, loading, setCricpocketInfo} from '../redux/js/actions/CricpocketActions/CricpocketActions';
 
 function CricpocketCard(props) {
     const [deposited_amount, setDeposited_amount] = useState('');
@@ -12,6 +12,7 @@ function CricpocketCard(props) {
     const [transfered_amount, setTransfered_amount] = useState('');
     const [receiver, setReceiver] = useState('');
     const [findReceiver, setFindReceiver] = useState('');
+    
 
     let dispatch = useDispatch();
 
@@ -53,7 +54,7 @@ function CricpocketCard(props) {
                     Alert.alert('Deposit Succesful');
                     props.navigation.navigate('AppLanding');
                     console.log(response)
-                    }
+                    }  
                 }
                 else
                 {

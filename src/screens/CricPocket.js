@@ -12,12 +12,24 @@ import { LoadProfile, loading } from '../../redux/js/actions/ProfileActions/Prof
 import { LoadCricpocket, CreateCricpocket } from '../../redux/js/actions/CricpocketActions/CricpocketActions';
 
 function CricPocket(props) {
-
-  const cricpocket = useSelector(state=> state.token.cricpocket);
-  const profile = useSelector(state=> state.token.profile);
-  
   let dispatch = useDispatch();
 
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener('focus', () => { 
+    console.log('Nausherwan')
+    dispatch(LoadCricpocket());
+  });
+
+    
+      return unsubscribe;
+  }, [props.navigation]);
+
+
+  let cricpocket, profile;
+    cricpocket = useSelector(state=> state.token.cricpocket);
+    profile = useSelector(state=> state.token.profile);
+  console.log(props.navigation)
+      
   const handleCreate = async () => {
     let res = await dispatch(CreateCricpocket());
     if(res.type === 'CRICPOCKET_SUCCESS')

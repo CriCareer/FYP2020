@@ -60,7 +60,7 @@ function Tabs() {
         );
       },
     })}>
-      <Tab.Screen name="Score" component={Scoring} />
+      <Tab.Screen name="Scoring" component={Scoring} />
       <Tab.Screen name="Scorecard" component={ScoreCard} />
     </Tab.Navigator>
   );
@@ -71,7 +71,7 @@ function CustomDrawerContent(props) {
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
       <DrawerItem
-        label="Settings"
+        label="Logout"
         onPress={() => Alert.alert('Settings displayed')}
       />
     </DrawerContentScrollView>
@@ -84,19 +84,18 @@ function AppStack() {
 
   return(
     <Drawer.Navigator backBehavior= 'history' drawerType='front' hideStatusBar = 'true' statusBarAnimation='fade'
-      drawerStyle={{ backgroundColor: 'white', width: 240}} drawerContent={(props) => <CustomDrawerContent {...props} />}
-      drawerContentOptions={{activeBackgroundColor:'#507E14', activeTintColor:'white'}}
+      drawerStyle={{ backgroundColor: 'white', width: 240}} 
       initialRouteName="Home">
-        {console.log({StartState: state})}
+      {console.log({StartState: state})}
       <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="My Profile" component={MyProfile} />
-      <Drawer.Screen name="My Player" component={MyPlayer} />
+      <Drawer.Screen name="MyProfile" component={MyProfile} />
+      <Drawer.Screen name="MyPlayer" component={MyPlayer} />
       {(state && state.role === 'Team Manager') || (state && state.role === 'Player') ?
-      <Drawer.Screen name="My Team" component={MyTeam} />
+      <Drawer.Screen name="MyTeam" component={MyTeam} />
       : state && state.role === 'Ground Manager' ?
-      <Drawer.Screen name="My Venues" component={MyVenues} />
+      <Drawer.Screen name="MyVenues" component={MyVenues} />
       : state && state.role === 'Organizer' &&
-      <Drawer.Screen name="My Tournaments" component={MyTournaments} />
+      <Drawer.Screen name="MyTournaments" component={MyTournaments} />
       }
       <Drawer.Screen name="My CricPocket" component={CricPocket} />
       <Drawer.Screen name="Players" component={PlayerSection} />
@@ -107,7 +106,7 @@ function AppStack() {
       {/* <Drawer.Screen name="Umpires" component={CricPocket} /> */}
       {/* <Drawer.Screen name="Toss" component={Toss} /> */}
       <Drawer.Screen name="Requests" component={Requests} />
-      <Drawer.Screen name="Scoring" component={Tabs} />
+      {/* <Drawer.Screen name="Scoring" component={Tabs} /> */}
     </Drawer.Navigator>
   )
 }
@@ -139,6 +138,7 @@ export default function Routes() {
         <Stack.Screen options={{headerShown: true}} name="JoinMatchForm" component={JoinMatchForm} />
         <Stack.Screen options={{headerShown: true, title: 'Team Matches'}} name="MyMatches" component={MyMatches} />
         <Stack.Screen options={{headerShown: true, title: 'Toss'}} name="toss" component={Toss} />
+        <Stack.Screen options={{headerShown: true}} name="Scoring" component={Tabs} />
       </Stack.Navigator>
     </NavigationContainer>
   );

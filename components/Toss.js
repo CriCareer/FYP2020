@@ -3,9 +3,6 @@ import { View, Text, KeyboardAvoidingView, TextInput, Picker, Alert, Image} from
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import { styles } from '../styles/signup';
 import { useSelector, useDispatch } from 'react-redux';
-import {checkInputs} from '../src/utilities';
-import ImagePicker from 'react-native-image-picker';
-import { AddNewPlayer } from '../redux/js/actions/TeamActions/TeamActions';
 import { FindPlayer } from '../redux/js/actions/PlayerActions/PlayerActions';
 import Header from '../src/screens/Header'
 import { StartMatch } from '../redux/js/actions/MatchActions/MatchActions';
@@ -22,10 +19,15 @@ let [decision, setDecision] = useState('')
 
 let dispatch = useDispatch();
 
+
 useEffect(() => {
+    const unsubscribe = props.navigation.addListener('focus', () => { 
+    console.log('Nausherwan')
     toSelect(teamA.name, teamB.name);
-    final = winner
-})
+  });
+
+    return unsubscribe;
+  }, [props.navigation]);
 
 const toss = (team, choice) => {
     let result = ''; let i = 0, coin ;
@@ -91,18 +93,18 @@ const toSelect = (teamA, teamB) => {
                 match_id: match._id,
                 toss: winner._id
             }
-            let response = await dispatch(StartMatch(obj));
-            if(response.type === 'MATCH_SUCCESS')
-            {
-                if(response.data.msg)
-                {
-                    Alert.alert(response.data.msg);
-                }
-                props.navigation.navigate('Scoring', {match: match})
-            }
-            else{
-                Alert.alert('Something Wrong')
-            }
+            // let response = await dispatch(StartMatch(obj));
+            // if(response.type === 'MATCH_SUCCESS')
+            // // {
+            //     if(response.data.msg)
+            //     {
+            //         Alert.alert(response.data.msg);
+            //     }
+                props.navigation.navigate('Scoring', {toss: obj})
+            // // }
+            // else{
+            //     Alert.alert('Something Wrong')
+            // }
         }
 }  
 
@@ -120,16 +122,12 @@ const decide = (value) => {
                 <Text style={{fontSize: 20, fontWeight: '600', marginTop: 20, marginBottom: 20,textAlign:'center'}}>{todecide} to Chose the Coin</Text>
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                     <TouchableOpacity style={{justifyContent:'center', alignItems: 'center', padding: 30}} onPress = {() =>{toss(todecide.teamA, 1)}}>
-                    {/* <Text style={styles.signupButton}>  
-                        Heads
-                    </Text> */}
+                    
                     {console.log({ToDecide : todecide})}
                     <Image source={require('../images/heads.png')} style={{height: 120, width: 120}}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} onPress = {() =>{toss(todecide.teamB, 2)}}>
-                    {/* <Text style={styles.signupButton}>  
-                        Tails
-                    </Text> */}
+                    
                     <Image source={require('../images/tails.png')} style={{height: 120, width: 120}}/>
                     </TouchableOpacity>
                 </View>
@@ -163,30 +161,12 @@ const decide = (value) => {
                     <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} 
                         onPress = {() => handleSubmit()}>
                         <Text style={styles.signupButton}>  
-                            Start Match
+                            Start
                         </Text>
                         </TouchableOpacity>
                 </View> 
                 </View>
                 }        
-                {/* <TextInput 
-                    style={styles.inputBox} 
-                    placeholder="Search by Player ID" 
-                    placeholderTextColor="white"
-                    value={id}
-                    autoCapitalize = 'none'
-                    onChangeText={(text) => setId(text)}/>
-                <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} onPress = {() =>{getPlayer()}}>
-                <Text>  
-                    Get Player
-                </Text>
-                </TouchableOpacity>
-                 
-                <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} onPress = {() =>{handleSubmit()}}>
-                    <Text style={styles.signupButton}>  
-                        Invite
-                    </Text>
-                </TouchableOpacity> */}
             </ScrollView>
         </View>
     );

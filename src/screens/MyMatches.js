@@ -22,7 +22,7 @@ function MyMatches(props) {
           {console.log({MatchesState: matches})}
             <FlatList
               data={matches}
-              renderItem={({ item }) => <Card children={item} text={'match'} button={'Toss'} button2={'Continue'} flow={props.navigation}/>}
+              renderItem={({ item }) => <Card children={item} text={'match'} button={'Start'} button2={'Continue'} flow={props.navigation}/>}
               keyExtractor={item => item._id}
             />
           </View>
