@@ -199,7 +199,7 @@ function MatchForm(props) {
             style={{width: 200}}
             mode="date"
             date={date}
-            placeholder="Date of Birth"
+            placeholder="Match Date"
             format="YYYY-MM-DD"
             minDate={min}
             maxDate={max}

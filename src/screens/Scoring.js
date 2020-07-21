@@ -14,6 +14,11 @@ function Scoring(props) {
         const unsubscribe = props.navigation.addListener('focus', () => { 
         console.log('Nausherwan')
       });
+
+    const nextInnings = () => {
+        
+    }
+
     
         return unsubscribe;
       }, [props.navigation]);
@@ -54,9 +59,6 @@ function Scoring(props) {
         [win1Ratio, setWin1Ratio] = useState(match.team1.win_ratio),
         [win2Ratio, setWin2Ratio] = useState(match.team2.win_ratio);
 
-    const nextInnings = () =>{
-           
-    }
 
     const setRatio = () => {
         if(overs === 0 && score === 0)
@@ -94,9 +96,7 @@ function Scoring(props) {
                 setWin1Ratio(w1);
                 setWin2Ratio(w2);
             }    
-        }
-       
-        
+        }   
     }
 
     const changeStrike = () => {

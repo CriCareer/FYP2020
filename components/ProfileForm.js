@@ -146,7 +146,7 @@ function ProfileForm(props) {
                     onChangeText={(text) => setCity(text)}/>
                 <TextInput 
                     style={styles.inputBox} 
-                    placeholder="Phone" 
+                    placeholder="Phone    without(-)" 
                     placeholderTextColor="white"
                     value={phone}
                     autoCapitalize = 'none'
@@ -176,7 +176,7 @@ function ProfileForm(props) {
                 />
                 <TextInput 
                     style={styles.inputBox} 
-                    placeholder="1234567890123" 
+                    placeholder="CNIC       without(-)" 
                     placeholderTextColor="white"
                     autoCapitalize = 'none'
                     value={cnic}

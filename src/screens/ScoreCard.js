@@ -1,15 +1,9 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import {Container} from 'native-base'
-import AppHeader from './Header';
-import {logout} from '../../redux/js/actions/AuthActions/AuthActions';
-import { color } from 'react-native-reanimated';
 import { useDispatch } from 'react-redux';
-import { FlatList } from 'react-native-gesture-handler';
-import Card from '../../components/Card';
 import { DataTable } from 'react-native-paper';
 import {data} from '../utilities/data';
-import MatchSection from './MatchSection';
 
 function Scoring(props) {
 
@@ -28,13 +22,6 @@ function Scoring(props) {
             'Waqas Shakoor','Zubair Mughal','Zubair Afzal','Kamran Ali' 
         ],
     }
-
-
-    let team1 = match.team1 , team2= match.team2, toss_win, batting1, batting2;
-    let  team1_score = 0,
-    team2_score = 0,
-    team1_wickets = 0,
-    team2_wickets = 0;
 
     let dispatch = useDispatch();
     return (
@@ -80,23 +67,21 @@ function Scoring(props) {
             </Text>
             </View>
 
-            <View style={{flex: 0.4, justifyContent: 'center', alignItems: 'center', margin:0 }}>
-                <DataTable style={{height: 180, width: 400,}}>
+            <View style={{flex: 0.4, justifyContent: 'center', alignItems: 'center', marginTop:100 }}>
+                <DataTable style={{height: 50, width: 400,}}>
                     <DataTable.Header style={{backgroundColor: "#507E14",}}>
                     <DataTable.Title >Bowler</DataTable.Title>
                     <DataTable.Title numeric>Overs</DataTable.Title>
                     <DataTable.Title numeric>Runs</DataTable.Title>
                     <DataTable.Title numeric>Wickets</DataTable.Title>
-                    <DataTable.Title numeric>Eco</DataTable.Title>
                     </DataTable.Header>
 
                     <DataTable.Row style={{}}>
-                        <DataTable.Cell ></DataTable.Cell>
+                        <DataTable.Cell >Ali</DataTable.Cell>
                         <DataTable.Cell numeric>{data.team2_players[1].b_overs}.{data.team2_players[1].b_balls}</DataTable.Cell>
-                        <DataTable.Cell numeric>{ballsBat1}</DataTable.Cell>
-                        <DataTable.Cell numeric>{foursBat1}</DataTable.Cell>
-                        <DataTable.Cell numeric>{sixesBat1}</DataTable.Cell>
-                        <DataTable.Cell numeric>{rateBat1}</DataTable.Cell>
+                        <DataTable.Cell numeric>{data.team1_players[1].runs}</DataTable.Cell>
+                        <DataTable.Cell numeric>{data.team1_players[1].wickets}</DataTable.Cell>
+                        <DataTable.Cell numeric></DataTable.Cell>
                     </DataTable.Row>
 
                     {/* <DataTable.Row style={{}}>
